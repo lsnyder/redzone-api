@@ -20,6 +20,7 @@ exports.upsert = (req, statType, cb) => {
       bulk.find({statId:stat.statId, type:stat.type}).upsert().updateOne(stat)
     })
     bulk.execute();
+    console.log("-----", statType)
     cb()
   })
 }
