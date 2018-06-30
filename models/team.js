@@ -1,7 +1,6 @@
 const mongo = require('mongodb')
 
 exports.upsert = (req, cb) => {
-  console.log("$$$$$$$$$$$")
   const {leagueTeamInfoList} = req.body;
   mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
     if (err) throw err;

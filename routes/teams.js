@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/:platform/:leagueId/leagueteams', (req, res) => {
+  console.log("$$$$")
   team_controller.upsert_team_detail(req, res)
 })
 
