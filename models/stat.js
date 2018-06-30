@@ -5,22 +5,6 @@ exports.upsert = (req, statType, cb) => {
     if (err) throw err;
     var db = client.db('stats')
     var bulk = db.collection('stat').initializeUnorderedBulkOp();
-    switch(statType) {
-      case 'team':
-        statInfoList = req.body.teamStatInfoList;
-      case 'defense':
-        statInfoList = req.body.playerDefensiveStatInfoList;
-      case 'rushing':
-        statInfoList = req.body.playerRushingStatInfoList;
-      case 'passing':
-        statInfoList = req.body.playerPassingStatInfoList;
-      case 'receiving':
-        statInfoList = req.body.playerReceivingStatInfoList;
-      case 'kicking':
-        statInfoList = req.body.playerKickingStatInfoList;
-      case 'punting':
-        statInfoList = req.body.playerPuntingStatInfoList;
-    }
     const typeMap = {
       team: 'teamStatInfoList',
       defense: 'playerDefensiveStatInfoList',
