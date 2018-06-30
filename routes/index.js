@@ -4,7 +4,7 @@ var team_controller = require('../controllers/team')
 var standing_controller = require('../controllers/standing')
 var player_controller = require('../controllers/player')
 var stat_controller = require('../controllers/stat')
-var score_controller = require('../controllers/player')
+var score_controller = require('../controllers/score')
 
 router.post('/:platform/:leagueId/leagueteams', (req, res) => {
   team_controller.upsert_team_detail(req, res)
