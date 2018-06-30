@@ -5,3 +5,9 @@ exports.score_weekly = function(req, res) {
     res.send(scores)
   })
 };
+
+exports.upsert_scores = function(req, res) {
+  Score.upsert(req,() => {
+    res.sendStatus(202)
+  })
+};

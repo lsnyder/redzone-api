@@ -15,3 +15,18 @@ exports.listWeeklyScores = (req, cb) => {
     })
   })
 }
+
+exports.upsert = (req, cb) => {
+  const {gameScheduleInfoList} = req.body;
+  mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
+    if (err) throw err;
+    var db = client.db('teams')
+    var bulk = db.collection('scores').initializeUnorderedBulkOp();
+
+    gameScheduleInfoList.forEach(game => {
+      bulk.find({scheduleId:game.scheduleId}).upsert().updateOne(game)
+    })
+    bulk.execute();
+    cb()
+  })
+}
