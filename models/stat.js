@@ -3,6 +3,8 @@ const mongo = require('mongodb')
 exports.upsert = (req, statType, cb) => {
   mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
     if (err) throw err;
+    console.log("++++++", statType)
+
     var db = client.db('stats')
     var bulk = db.collection('stat').initializeUnorderedBulkOp();
     const typeMap = {
