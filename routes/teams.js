@@ -6,9 +6,4 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Redzone API' });
 });
 
-router.post('/:platform/:leagueId/leagueteams', (req, res) => {
-  console.log("$$$$")
-  team_controller.upsert_team_detail(req, res)
-})
-
 module.exports = router;
