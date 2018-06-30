@@ -1,22 +1,21 @@
 const mongo = require('mongodb')
 
 exports.upsert = (req, statType, cb) => {
-  let statInfoList
   switch(statType) {
     case 'team':
-      statInfoList = req.body.teamStatInfoList;
+      const statInfoList = req.body.teamStatInfoList;
     case 'defense':
-      statInfoList = req.body.playerDefensiveStatInfoList;
+      const statInfoList = req.body.playerDefensiveStatInfoList;
     case 'rushing':
-      statInfoList = req.body.playerRushingStatInfoList;
+      const statInfoList = req.body.playerRushingStatInfoList;
     case 'passing':
-      statInfoList = req.body.playerPassingStatInfoList;
+      const statInfoList = req.body.playerPassingStatInfoList;
     case 'receiving':
-      statInfoList = req.body.playerReceivingStatInfoList;
+      const statInfoList = req.body.playerReceivingStatInfoList;
     case 'kicking':
-      statInfoList = req.body.playerKickingStatInfoList;
+      const statInfoList = req.body.playerKickingStatInfoList;
     case 'punting':
-      statInfoList = req.body.playerPuntingStatInfoList;
+      const statInfoList = req.body.playerPuntingStatInfoList;
   }
   mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
     if (err) throw err;
