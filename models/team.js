@@ -1,16 +1,15 @@
-const mongo = require('mongodb')
+const db = require('../services/mongo')
 
 exports.upsert = (req, cb) => {
   const {leagueTeamInfoList} = req.body;
-  mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
-    if (err) throw err;
-    var db = client.db('teams')
-    var bulk = db.collection('teams').initializeUnorderedBulkOp();
+  const bulk = db.get()
+    .db('teams')
+    .collection('teams')
+    .initializeUnorderedBulkOp();
 
-    leagueTeamInfoList.forEach(team => {
-      bulk.find({teamId:team.teamId}).upsert().updateOne(team)
-    })
-    bulk.execute();
-    cb()
+  leagueTeamInfoList.forEach(team => {
+    bulk.find({teamId:team.teamId}).upsert().updateOne(team)
   })
+  bulk.execute();
+  cb()
 }

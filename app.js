@@ -11,7 +11,7 @@ var playerRouter = require('./routes/players');
 var standingRouter = require('./routes/standings');
 var teamRouter = require('./routes/teams');
 var statRouter = require('./routes/stats');
-
+var db = require('./services/mongo');
 var app = express();
 
 // view engine setup
@@ -36,22 +36,33 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-app.use(function (err, req, res, next) {
-  if (err.isBoom) {
-    return res.status(err.output.statusCode).json(err.output.payload);
-  }  
+// app.use(function (err, req, res, next) {
+//   if (err.isBoom) {
+//     return res.status(err.output.statusCode).json(err.output.payload);
+//   }  
+// });
+
+// app.use(mongo.connect)
+
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
+db.connect(err => {
+  if (err) {
+    console.log('Unable to connect to Mongo.')
+    process.exit(1)
+  } else {
+    console.log('Connected to Mongo...')
+  }
+})
 
 module.exports = app;

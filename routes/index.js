@@ -6,6 +6,10 @@ var player_controller = require('../controllers/player')
 var stat_controller = require('../controllers/stat')
 var score_controller = require('../controllers/score')
 
+router.get('/', (req, res) => {
+  res.sendStatus(200)
+})
+
 router.post('/:platform/:leagueId/leagueteams', (req, res) => {
   team_controller.upsert_team_detail(req, res)
 })
