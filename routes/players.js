@@ -1,18 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var player_controller = require('../controllers/player');
-const { check, validationResult } = require('express-validator/check');
-
+var expressJoi = require('express-joi-validator');
+var Joi = require('joi');
 
 /* GET users listing. */
-router.get('/', [
-  check('teamId').optional().isInt(),
-  check('position').optional().equals('WR')
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+router.get('/', expressJoi({
+  query: {
+    teamId: Joi.number(),
+    position: Joi.string()
   }
+}), (req, res) => {
   player_controller.player_list(req, res)
 });
 
