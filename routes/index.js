@@ -7,7 +7,7 @@ var stat_controller = require('../controllers/stat')
 var score_controller = require('../controllers/score')
 
 router.get('/', (req, res) => {
-  res.sendStatus(200)
+  res.render('index', { title: 'Redzone API' });
 })
 
 router.post('/:platform/:leagueId/leagueteams', (req, res) => {

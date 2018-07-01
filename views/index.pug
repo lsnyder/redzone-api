@@ -3,3 +3,25 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  h3 Import
+  p POST - /:platform/:leagueId/leagueteams
+  p POST - /:platform/:leagueId/standings
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/schedules
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/teamstats
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/defense
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/kicking
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/passing
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/punting
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/rushing
+  p POST - /:platform/:leagueId/week/:weekType/:weekNumber/receiving
+  p POST - /:platform/:leagueId/freeagents/roster
+  p POST - /:platform/:leagueId/team/:teamId/roster
+
+
+  h3 Players
+  p GET - /players/:id
+  p GET - /players
+    ul
+      li teamId
+      li position
