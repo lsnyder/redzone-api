@@ -13,3 +13,10 @@ exports.player_detail = function(req, res) {
     res.send(player)
   })
 };
+
+
+exports.upsert_player = function(req, res) {
+  Player.upsert(req, () => {
+    res.send(202)
+  })
+};
