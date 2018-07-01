@@ -47,11 +47,11 @@ router.post('/:platform/:leagueId/week/:weekType/:weekNumber/receiving', (req, r
 })
 
 router.post('/:platform/:leagueId/freeagents/roster', (req, res) => {
-  player_controller.upsert_standings(req, res)
+  player_controller.upsert_players(req, res)
 })
 
 router.post('/:platform/:leagueId/team/:teamId/roster', (req, res) => {
-  player_controller.upsert_standings(req, res)
+  player_controller.upsert_players(req, res)
 })
 
 
