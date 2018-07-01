@@ -31,6 +31,7 @@ exports.list = (req, cb) => {
 
 exports.upsert = (req, cb) => {
   const {rosterInfoList} = req.body;
+  console.log("-----", rosterInfoList)
   mongo.connect('mongodb+srv://lsnyder:F51xtOAJYvqin5@free-dev-01-gwb63.mongodb.net/teams?retryWrites=true', function(err, client) {
     if (err) throw err;
     var db = client.db('teams')
