@@ -19,9 +19,49 @@ block content
   p POST - /:platform/:leagueId/team/:teamId/roster
 
 
-  h3 Players
-  p GET - /players/:id
-  p GET - /players
-    ul
-      li teamId
-      li position
+  h2 Players
+  table.resourceTable
+    tr
+      td 
+        b Method
+      td 
+        b Resource
+      td 
+        b Description
+      td
+        b Params
+    tr
+      td GET
+      td /players
+      td List details for all teams
+      td
+        ul
+          li teamId
+          li position
+    tr 
+      td GET
+      td /players/:id
+      td Fetch player details
+      td
+
+  h2 Teams
+  table.resourceTable
+    tr
+      td 
+        b Method
+      td 
+        b Resource
+      td 
+        b Description
+    tr
+      td GET
+      td /teams
+      td List details for all teams
+    tr 
+      td GET
+      td /teams/:id
+      td Fetch team details
+    tr
+      td GET
+      td /teams/:id/players
+      td List all players for a team

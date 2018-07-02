@@ -14,6 +14,12 @@ exports.player_detail = function(req, res) {
   })
 };
 
+exports.player_stats = function(req, res) {
+  Player.find_stats(req, (stats) => {
+    res.send(stats)
+  })
+};
+
 
 exports.upsert_players = function(req, res) {
   Player.upsert(req, () => {

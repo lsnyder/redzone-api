@@ -10,3 +10,12 @@ a {
 h1 {
   color: red
 }
+
+.resourceTable {
+  border: 1px solid black
+}
+
+td {
+  border: 1px solid black;
+  padding: 8px;
+}

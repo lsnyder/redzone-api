@@ -16,4 +16,16 @@ router.get('/', expressJoi({
 
 router.get('/:id', player_controller.player_detail);
 
+router.get('/:id/stats',expressJoi({
+  params: {
+    id: Joi.number()
+  },
+  query: {
+    seasonIndex: Joi.number(),
+    weekIndex: Joi.number()
+  }
+}), (req, res) => {
+  player_controller.player_stats(req, res)
+})
+
 module.exports = router;
