@@ -18,6 +18,16 @@ exports.upsert = (req, statType, cb) => {
   
   statInfoList.forEach(stat => {
     stat.type = statType;
+    db.get().db('stats').collection('stat').find({
+      $or:[
+        {rosterId:stat.rosterId},
+        {teamId:stat.teamId}
+      ], 
+      seasonIndex:stat.seasonIndex, 
+      weekIndex:{$lte:stat.weekIndex}
+    }).toArray((err, docs) => {
+      console.log("------", docs)
+    })
     bulk.find({statId:stat.statId, type:stat.type}).upsert().updateOne(stat)
   })
   bulk.execute();
