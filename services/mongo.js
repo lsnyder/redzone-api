@@ -10,6 +10,7 @@ exports.get = function() {
 exports.connect = (done) => {
   if (state.db) return done()
   MongoClient.connect(`mongodb+srv://${username}:${password}@${host}`, {retryWrites:true}, (err, db) => {
+    console.log(err)
     if (err) return done(err)
     state.db = db;
     done()
