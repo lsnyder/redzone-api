@@ -19,122 +19,129 @@ exports.upsert = (req, statType, cb) => {
   statInfoList.forEach(stat => {
     stat.type = statType;
     if (statType === 'team') {
-      var poo = _calculateTotals(stat)
-      console.log('$$$$', poo)
+      _calculateTotals(stat, function(err, res) {
+        stat = res[0]
+        stat._id = stat.id
+        delete stat.id
+        console.log(stat)
+        // bulk.find({statId:stat.statId, type:stat.type}).upsert().updateOne(stat)
+      })
+    } else {
+      bulk.find({statId:stat.statId, type:stat.type}).upsert().updateOne(stat)
     }
-    bulk.find({statId:stat.statId, type:stat.type}).upsert().updateOne(stat)
   })
   bulk.execute();
   cb()
 },
 
-_calculateTotals = () => {
+_calculateTotals = (stat, cb) => {
   var pipeline = [{ 
     $match:{
       teamId:stat.teamId, 
       weekIndex:{$lte:stat.weekIndex}, 
       type:'team', 
-      stageIndex:stat.stageIndex
+      stageIndex:stat.stageIndex,
+      seasonIndex:stat.seasonIndex
     } 
   }, { 
     $group:{  
       _id: null,  
-      id: {    $last: '$_id'  },  
-      teamId: {    $last:'$teamId'  },  
       defForcedFum: {    $last:'$defForcedFum'  },  
-      totalDefForcedFum: {    $sum:'$defForcedFum'  },  
       defFumRec: {    $last:'$defFumRec'  },  
-      totalDefFumRec: {    $sum:'$defFumRec'  },  
       defIntsRec: {    $last:'$defIntsRec'  },  
-      totalDefIntsRec: {    $sum:'$defIntsRec'  },  
-      defPtsPerGame: {    $last:'$defPtsPerGame'  },  
       defPassYds: {    $last:'$defPassYds'  },  
-      totalDefPassYds: {    $sum:'$defPassYds'  },  
-      defRushYds: {    $last:'$defRushYds'  },  
-      totalDefRushYds: {    $sum:'$defRushYds'  },  
+      defPtsPerGame: {    $last:'$defPtsPerGame'  },  
       defRedZoneFGs: {    $last:'$defRedZoneFGs'  },  
-      totalDefRedZoneFGs: {    $sum:'$defRedZoneFGs'  },  
-      defRedZones: {    $last:'$defRedZones'  },  
-      totalDefRedZones: {    $sum:'$defRedZones'  },  
       defRedZonePct: {    $last:'$defRedZonePct'  },  
+      defRedZones: {    $last:'$defRedZones'  },  
       defRedZoneTDs: {    $last: '$defRedZoneTDs'  },  
-      totalDefRedZoneTDs: {    $sum: '$defRedZoneTDs'  },  
+      defRushYds: {    $last:'$defRushYds'  },  
       defSacks: {    $last: '$defSacks'  },  
-      totalDefSacks: {    $sum: '$defSacks'  },  
       defTotalYds: {    $last: '$defTotalYds'  },  
-      totalDefTotalYds: {    $sum: '$defTotalYds'  },  
+      id: {    $last: '$_id'  },  
+      off1stDowns: {    $last:'$off1stDowns'  },  
+      off2PtAtt: {    $last:'$off2PtAtt'  },  
+      off2PtConv: {    $last:'$off2PtConv'  },  
+      off2PtConvPct: {    $last:'$off2PtConvPct'  },  
+      off3rdDownAtt: {    $last:'$off3rdDownAtt'  },  
+      off3rdDownConv: {    $last:'$off3rdDownConv'  },  
+      off3rdDownConvPct: {    $last:'$off3rdDownConvPct'  },  
       off4thDownAtt: {    $last:'$off4thDownAtt'  },  
-      totalOff4thDownAtt: {    $sum:'$off4thDownAtt'  },  
       off4thDownConv: {    $last:'$off4thDownConv'  },  
-      totalOff4thDownConv: {    $sum:'$off4thDownConv'  },  
       off4thDownConvPct: {    $last:'$off4thDownConvPct'  },  
       offFumLost: {    $last:'$offFumLost'  },  
-      totalOffFumLost: {    $sum:'$offFumLost'  },  
       offIntsLost: {    $last:'$offIntsLost'  },  
-      totalOffIntsLost: {    $sum:'$offIntsLost'  },  
-      off1stDowns: {    $last:'$off1stDowns'  },  
-      totalOff1stDowns: {    $sum:'$off1stDowns'  },  
-      offPtsPerGame: {    $last:'$offPtsPerGame'  },  
       offPassTDs: {    $last:'$offPassTDs'  },  
-      totalOffPassTDs: {    $sum:'$offPassTDs'  },  
       offPassYds: {    $last:'$offPassYds'  },  
-      totalOffPassYds: {    $sum:'$offPassYds'  },  
-      offRushTDs: {    $last:'$offRushTDs'  },  
-      totalOffRushTDs: {    $sum:'$offRushTDs'  },  
-      offRushYds: {    $last:'$offRushYds'  },  
-      totalOffRushYds: {    $sum:'$offRushYds'  },  
+      offPtsPerGame: {    $last:'$offPtsPerGame'  },  
       offRedZoneFGs: {    $last:'$offRedZoneFGs'  },  
-      totalOffRedZoneFGs: {    $sum:'$offRedZoneFGs'  },  
-      offRedZones: {    $last:'$offRedZones'  },  
-      totalOffRedZones: {    $sum:'$offRedZones'  },  
       offRedZonePct: {    $last:'$offRedZonePct'  },  
+      offRedZones: {    $last:'$offRedZones'  },  
       offRedZoneTDs: {    $last:'$offRedZoneTDs'  },  
-      totalOffRedZoneTDs: {    $sum:'$offRedZoneTDs'  },  
+      offRushTDs: {    $last:'$offRushTDs'  },  
+      offRushYds: {    $last:'$offRushYds'  },  
       offSacks: {    $last:'$offSacks'  },  
-      totalOffSacks: {    $sum:'$offSacks'  },  
-      off3rdDownAtt: {    $last:'$off3rdDownAtt'  },  
-      totalOff3rdDownAtt: {    $sum:'$off3rdDownAtt'  },  
-      off3rdDownConv: {    $last:'$off3rdDownConv'  },  
-      totalOff3rdDownConv: {    $sum:'$off3rdDownConv'  },  
-      off3rdDownConvPct: {    $last:'$off3rdDownConvPct'  },  
-      off2PtAtt: {    $last:'$off2PtAtt'  },  
-      totalOff2PtAtt: {    $sum:'$off2PtAtt'  },  
-      off2PtConv: {    $last:'$off2PtConv'  },  
-      totalOff2PtConv: {    $sum:'$off2PtConv'  },  
-      off2PtConvPct: {    $last:'$off2PtConvPct'  },  
       offTotalYds: {    $last:'$offTotalYds'  },  
-      totalOffTotalYds: {    $sum:'$offTotalYds'  },  
       offTotalYdsGained: {    $sum:'$offTotalYdsGained'  },  
       penalties: {    $last:'$penalties'  },  
-      totalPenalties: {    $sum:'$penalties'  },  
       penaltyYds: {    $last:'$penaltyYds'  },  
-      totalPenaltyYds: {    $sum:'$penaltyYds'  },  
-      totalWins: {    $last:'$totalWins'  },  
-      totalLosses: {    $last:'$totalLosses'  },  
-      totalTies: {    $last:'$totalTies'  },  
-      tODiff: {    $last:'$tODiff'  },  
-      totalTODiff: {    $sum:'$tODiff'  },  
-      tOGiveaways: {    $last:'$tOGiveaways'  },  
-      totalTOGiveaways: {    $sum:'$tOGiveaways'  },  
-      tOTakeaways: {    $last:'$tOTakeaways'  },  
-      totalTOTakeaways: {    $sum:'$tOTakeaways'  },  
-      weekIndex: {    $last:'$weekIndex'  },  
-      type: {    $last: '$type'  },  
-      seed: {    $last:'$seed'  },  
-      seasonIndex: {    $last:'$seasonIndex'  },  
-      statId: {    $last:'$statId'  },  
       scheduleId: {    $last:'$scheduleId'  },  
-      stageIndex: {    $last:'$stageIndex'  }
+      seasonIndex: {    $last:'$seasonIndex'  },  
+      seed: {    $last:'$seed'  },  
+      stageIndex: {    $last:'$stageIndex'  },
+      statId: {    $last:'$statId'  },  
+      teamId: {    $last:'$teamId'  },  
+      tODiff: {    $last:'$tODiff'  },  
+      tOGiveaways: {    $last:'$tOGiveaways'  },  
+      tOTakeaways: {    $last:'$tOTakeaways'  },  
+      totalDefForcedFum: {    $sum:'$defForcedFum'  },  
+      totalDefFumRec: {    $sum:'$defFumRec'  },  
+      totalDefIntsRec: {    $sum:'$defIntsRec'  },  
+      totalDefPassYds: {    $sum:'$defPassYds'  },  
+      totalDefRedZoneFGs: {    $sum:'$defRedZoneFGs'  },  
+      totalDefRedZones: {    $sum:'$defRedZones'  },  
+      totalDefRedZoneTDs: {    $sum: '$defRedZoneTDs'  },  
+      totalDefRushYds: {    $sum:'$defRushYds'  },  
+      totalDefSacks: {    $sum: '$defSacks'  },  
+      totalDefTotalYds: {    $sum: '$defTotalYds'  },  
+      totalLosses: {    $last:'$totalLosses'  },  
+      totalOff1stDowns: {    $sum:'$off1stDowns'  },  
+      totalOff2PtAtt: {    $sum:'$off2PtAtt'  },  
+      totalOff2PtConv: {    $sum:'$off2PtConv'  },  
+      totalOff3rdDownAtt: {    $sum:'$off3rdDownAtt'  },  
+      totalOff3rdDownConv: {    $sum:'$off3rdDownConv'  },  
+      totalOff4thDownAtt: {    $sum:'$off4thDownAtt'  },  
+      totalOff4thDownConv: {    $sum:'$off4thDownConv'  },  
+      totalOffFumLost: {    $sum:'$offFumLost'  },  
+      totalOffIntsLost: {    $sum:'$offIntsLost'  },  
+      totalOffPassTDs: {    $sum:'$offPassTDs'  },  
+      totalOffPassYds: {    $sum:'$offPassYds'  },  
+      totalOffRedZoneFGs: {    $sum:'$offRedZoneFGs'  },  
+      totalOffRedZones: {    $sum:'$offRedZones'  },  
+      totalOffRedZoneTDs: {    $sum:'$offRedZoneTDs'  },  
+      totalOffRushTDs: {    $sum:'$offRushTDs'  },  
+      totalOffRushYds: {    $sum:'$offRushYds'  },  
+      totalOffSacks: {    $sum:'$offSacks'  },  
+      totalOffTotalYds: {    $sum:'$offTotalYds'  },  
+      totalPenalties: {    $sum:'$penalties'  },  
+      totalPenaltyYds: {    $sum:'$penaltyYds'  },  
+      totalTies: {    $last:'$totalTies'  },  
+      totalTODiff: {    $sum:'$tODiff'  },  
+      totalTOGiveaways: {    $sum:'$tOGiveaways'  },  
+      totalTOTakeaways: {    $sum:'$tOTakeaways'  },  
+      totalWins: {    $last:'$totalWins'  },  
+      type: {    $last: '$type'  },  
+      weekIndex: {    $last:'$weekIndex'  }
     } 
   }, { $addFields:{  
+    totalDefRedZonePct: {    $multiply:[{$divide:[{$sum:['$totalDefRedZoneFGs', '$totalDefRedZoneTDs']}, '$totalDefRedZones']}, 100]  },  
     totalOff2PtConvPct: {    $multiply:[{$divide:['$totalOff2PtConv', '$totalOff2PtAtt']}, 100]  },  
     totalOff3rdDownConvPct: {    $multiply:[{$divide:['$totalOff3rdDownConv', '$totalOff3rdDownAtt']}, 100]  },  
-    totalDefRedZonePct: {    $multiply:[{$divide:[{$sum:['$totalDefRedZoneFGs', '$totalDefRedZoneTDs']}, '$totalDefRedZones']}, 100]  },  
     totalOff4thDownConvPct: {    $multiply:[{$divide:['$totalOff4thDownConv', '$totalOff4thDownAtt']}, 100]  },  
     totalOffRedZonePct: {    $multiply:[{$divide:[{$sum:['$totalOffRedZoneFGs', '$totalOffRedZoneTDs']}, '$totalOffRedZones']}, 100]  }} 
   }]
   db.get().db('stats').collection('stat').aggregate(pipeline).toArray((err, docs) => {
-    console.log("!!!!!", docs)
+    return cb(err, docs)
   })
 }
 
