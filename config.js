@@ -1,8 +1,8 @@
 const dev ={
   db: {
-    host: 'free-dev-01-gwb63.mongodb.net/teams',
-    username: process.env.MONGO_USERNAME,
-    password: process.env.MONGO_PASSWORD
+    host: 'productnet-dev-xfwou.mongodb.net/test?retryWrites=true&w=majority',
+    username: 'admin',
+    password: 'gMKEnqAuM2xyWevn'
   }
 }
 

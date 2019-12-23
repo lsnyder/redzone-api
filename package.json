@@ -1,5 +1,5 @@
 {
-  "name": "redzone-api",
+  "name": "upp-api-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,8 +14,8 @@
     "express-joi-validator": "^2.0.0",
     "http-errors": "~1.6.2",
     "joi": "^13.4.0",
-    "mongodb": "^3.1.0",
-    "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "mongodb": "^3.4.1",
+    "morgan": "^1.9.1",
+    "pug": "^2.0.4"
   }
 }
